@@ -16,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = htmlspecialchars($name);
         $email = htmlspecialchars($email);
         $password = password_hash(htmlspecialchars($password), PASSWORD_BCRYPT); // Hash password
-        // Check for email uniqueness
+
+        // Check for email 
         $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
         $checkStmt->bind_param("s", $email);
         $checkStmt->execute();
@@ -86,7 +87,7 @@ $conn->close();
 
 
 
-        <form class="create-account-form" method="POST" class="needs-validation mx-auto " novalidate>
+        <form class="create-account-form" method="POST" action="" class="needs-validation mx-auto " novalidate>
             <div class="mb-3">
                 <label for="name" class="form-label">Full Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="user..." required>
