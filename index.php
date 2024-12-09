@@ -1,19 +1,21 @@
 <?php
 include "./db/conn.php";
+include "./functions/helpers.php";
 
+
+// if session exists redirect to dashbord.php
 session_start();
-
-// if session exists redirect to dashbord
 if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
-    exit();
+     redirect("dashboard.php");
 }
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // get data from form
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    $email =sanitize_input($_POST["email"]);
+    $password =sanitize_input($_POST["password"]);
 
     // form validation
     if( empty($email) || empty($password)) {
@@ -26,8 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // login stuff
     }else{
 
-        $email = htmlspecialchars($email);
-        $password = htmlspecialchars($password);
 
         $checkStmt = $conn->prepare("SELECT id, name, password FROM users WHERE email = ?");
         $checkStmt->bind_param("s", $email);
