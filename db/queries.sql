@@ -35,8 +35,8 @@ CREATE TABLE users (
     name VARCHAR(255),
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(20),
-reg_date DATETIME DEFAULT CURRENT_TIMESTAMP
+    role VARCHAR(20) ,
+     reg_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- insertion des donnes
