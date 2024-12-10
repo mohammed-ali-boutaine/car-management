@@ -60,35 +60,7 @@ $conn->close();
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    .data-holder {
-      display: none; 
-      margin-top: 20px;
-    }
-    .data-holder.d-block {
-      display: block; 
-    }
-    .toggle-btn.active {
-      font-weight: bold;
-    }
-
-    .create-account-form {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width:500px;
-    background-color: #171a1c;
-    margin:50px auto 0px;
-    border:1px solid gray;
-    padding:50px 20px;
-    border-radius: 12px;
-  }
-    nav{
-        background: #000;
-    }
-</style>
+  <link rel="stylesheet" href="public/style.css">
 </head>
 <body>
 
@@ -105,14 +77,19 @@ $conn->close();
       <!-- Navigation links -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
+       
+
           <li class="nav-item  ms-4">
             <button class=" btn mr-4 toggle-btn btn-outline-primary" id="client"> Clients</button>
           </li>
           <li class="nav-item  ms-4">
             <button class=" btn btn-outline-primary mr-4  toggle-btn"  id="voiture"> Voitures</button>
           </li>
-          <li class="nav-item  ms-4">
+          <li class="nav-item  ms-4 me-8">
             <button class=" btn btn-outline-primary  mr-4  toggle-btn"  id="contrat"> Contrats</button>
+          </li>
+          <li class="nav-item  ms-4">
+        <button class="btn btn-secondary " id="create-account-toggle"> Create User</button>
           </li>
           <li class="nav-item  ms-4">
             <a class="nav-link text-danger  mr-4" href="logout.php">Logout</a>
@@ -122,9 +99,10 @@ $conn->close();
     </div>
   </nav>
 
-  <div class="container d-flex justify-content-end">
+  <!-- <div class="container d-flex justify-content-end">
     <button class="btn btn-primary my-4" id="create-account-toggle"> Create User</button>
-  </div>
+
+  </div> -->
 
 <div class="container">
 
@@ -140,7 +118,10 @@ $conn->close();
 <!-- --------       Clients   --------  -->
 
     <div class="client data-holder  d-block">
-        <h2>Clients</h2>
+        <div class="container d-flex justify-content-between align-items-center">
+                <h2>Clients</h2>
+                <button class="btn btn-primary my-4" id="create-client-toggle"> Ajouter Client</button>
+        </div>
 
         <?php  
 
@@ -193,8 +174,10 @@ if ($result->num_rows > 0) {
     </div>
     <div class="voiture  data-holder">
 
-<h2>voitures</h2>
-
+    <div class="container d-flex justify-content-between align-items-center">
+                <h2>Voitures</h2>
+                <button class="btn btn-primary my-4" id="create-voiture-toggle"> Ajouter Voiture</button>
+        </div>
     
 
         <?php  
@@ -247,8 +230,10 @@ if ($result->num_rows > 0) {
     </div>
     <div class="contrat data-holder">
 
-    <h2>Contrat</h2>
-
+        <div class="container d-flex justify-content-between align-items-center">
+                <h2>Contrat</h2>
+                <button class="btn btn-primary my-4" id="create-contrat-toggle"> Ajouter Contrat</button>
+        </div>
 
     <?php  
 
@@ -356,19 +341,116 @@ echo "No contrats found.";
 
 
 
+<!-- add client form  -->
+
+<div class="container mt-5 create-client-form d-none">
+    <form action="./pages/client_add.php" method="POST">
+        <h2 class="mb-4">Client Information Form</h2>
+
+        <!-- CIN -->
+        <div class="mb-3">
+            <label for="cin" class="form-label">CIN</label>
+            <input name="cin" type="text" class="form-control" id="cin" placeholder="Enter CIN" required>
+        </div>
+
+        <!-- Name -->
+        <div class="mb-3">
+            <label for="nom" class="form-label">Name</label>
+            <input name="nom" type="text" class="form-control" id="nom" placeholder="Enter name" required>
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+            <label for="adress" class="form-label">Address</label>
+            <input name="adress" type="text" class="form-control" id="adress" placeholder="Enter address" required>
+        </div>
+
+        <!-- Telephone -->
+        <div class="mb-3">
+            <label for="tel" class="form-label">Telephone</label>
+            <input name="tel" type="tel" class="form-control" id="tel" placeholder="Enter phone number" required>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 
 
 
 
 
 
+<!-- add voiture form  -->
+
+<div class="container mt-5 create-voiture-form d-none" >
+        <form action="./pages/voiture_add.php" method="POST">
+        <h2 class="mb-4">Car Information Form</h2>
+
+            <div class="mb-3">
+                <label for="matricule" class="form-label">Matricule</label>
+                <input name="matricule" type="text" class="form-control" id="matricule" placeholder="Enter matricule">
+            </div>
+            <div class="mb-3">
+                <label for="marque" class="form-label">Marque</label>
+                <input name="marque"  type="text" class="form-control" id="marque" placeholder="Enter marque">
+            </div>
+            <div class="mb-3">
+                <label for="modele" class="form-label">Modèle</label>
+                <input name="modele" type="text" class="form-control" id="modele" placeholder="Enter modèle">
+            </div>
+            <div class="mb-3">
+                <label for="annee" class="form-label">Année</label>
+                <input name="annee" type="number" class="form-control" id="annee" placeholder="Enter année">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 
 
 
 
 
+<!-- add contrat form  -->
 
+<div class="container mt-5 create-contrat-form d-none">
+    <form action="./pages/contrat_add.php" method="POST">
+        <h2 class="mb-4">Contract Information Form</h2>
 
+        <!-- Start Date -->
+        <div class="mb-3">
+            <label for="date_debut" class="form-label">Start Date</label>
+            <input name="date_debut" type="date" class="form-control" id="date_debut" required>
+        </div>
+
+        <!-- End Date -->
+        <div class="mb-3">
+            <label for="date_fin" class="form-label">End Date</label>
+            <input name="date_fin" type="date" class="form-control" id="date_fin" required>
+        </div>
+
+        <!-- Duration -->
+        <div class="mb-3">
+            <label for="dure" class="form-label">Duration (days)</label>
+            <input name="dure" type="number" class="form-control" id="dure" placeholder="Enter duration in days" required>
+        </div>
+
+        <!-- Client CIN -->
+        <div class="mb-3">
+            <label for="cin_client" class="form-label">Client CIN</label>
+            <input name="cin_client" type="text" class="form-control" id="cin_client" placeholder="Enter client CIN" required>
+        </div>
+
+        <!-- Vehicle Matricule -->
+        <div class="mb-3">
+            <label for="id_matric" class="form-label">Vehicle Matricule</label>
+            <input name="id_matric" type="text" class="form-control" id="id_matric" placeholder="Enter vehicle matricule" required>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 
 
 
@@ -422,9 +504,7 @@ echo "No contrats found.";
 
 
 
-<script src="./app.js">
-
-</script>
+<script src="public/app.js"></script>
 
 <script>
         // Bootstrap form validation

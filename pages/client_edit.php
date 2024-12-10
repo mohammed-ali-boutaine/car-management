@@ -1,13 +1,19 @@
 <?php
-include "../db/db.php";
+include "../config.php";
+include "../db/conn.php";
 include "../functions/helpers.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_POST["id"];
-    $name = sanitize_input($_POST["name"]);
-    $email = sanitize_input($_POST["email"]);
+// Authentication function
+requireAuth();
 
-    if (empty($name) || empty($email)) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $cin = sanitize_input($_POST["cin"]);
+    $nom = sanitize_input($_POST["nom"]);
+    $adress = sanitize_input($_POST["adress"]);
+    $tel = sanitize_input($_POST["tel"]);
+
+    if (empty($cin) || empty($nom)|| empty($adress)|| empty($tel)) {
         echo "All fields are required!";
     } else {
         $sql = "UPDATE users SET name='$name', email='$email' WHERE id='$id'";

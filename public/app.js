@@ -42,19 +42,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  // toggle create account form
-  const createAccountForm = document.querySelector(".create-account-form")
-  const toggleBtn = document.getElementById("create-account-toggle")
+// Reusable function to handle form toggling and submission
+function handleFormToggleAndSubmission(formSelector, toggleButtonSelector) {
+  const form = document.querySelector(formSelector);
+  const toggleButton = document.getElementById(toggleButtonSelector);
 
-  createAccountForm.addEventListener("submit",function(){
-    createAccountForm.classList.add("d-none")
+  // Hide the form after submission
+  form.addEventListener("submit", function () {
+      form.classList.add("d-none");
+  });
 
-  })
-  toggleBtn.addEventListener("click",function(){
+  // Toggle the visibility of the form on button click
+  toggleButton.addEventListener("click", function () {
+      form.classList.toggle("d-none");
+  });
+}
 
-    createAccountForm.classList.toggle("d-none")
-
-  })
-
+// Call the function for each form and its corresponding button
+handleFormToggleAndSubmission(".create-account-form", "create-account-toggle");
+handleFormToggleAndSubmission(".create-client-form", "create-client-toggle");
+handleFormToggleAndSubmission(".create-voiture-form", "create-voiture-toggle");
+handleFormToggleAndSubmission(".create-contrat-form", "create-contrat-toggle");
   
 });
