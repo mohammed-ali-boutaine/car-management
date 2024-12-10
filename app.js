@@ -40,4 +40,21 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
+
+
+  // toggle create account form
+  const createAccountForm = document.querySelector(".create-account-form")
+  const toggleBtn = document.getElementById("create-account-toggle")
+
+  createAccountForm.addEventListener("submit",function(){
+    createAccountForm.classList.add("d-none")
+
+  })
+  toggleBtn.addEventListener("click",function(){
+
+    createAccountForm.classList.toggle("d-none")
+
+  })
+
+  
 });

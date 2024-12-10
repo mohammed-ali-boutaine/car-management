@@ -6,8 +6,54 @@ include "./functions/helpers.php";
 // Authentication function
 requireAuth();
 
-?>
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
 
+
+    // validation 
+    if(empty($name) || empty($email) || empty($password)) {
+        $error = "All fields are required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format.";
+    }else{
+        $name = htmlspecialchars($name);
+        $email = htmlspecialchars($email);
+        $password = password_hash(htmlspecialchars($password), PASSWORD_BCRYPT); // Hash password
+
+        // Check for email 
+        $checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        $checkStmt->bind_param("s", $email);
+        $checkStmt->execute();
+        $checkStmt->store_result();
+
+        if ($checkStmt->num_rows > 0) {
+            $error = "Email is already registered.";
+        } else {
+
+  // Insert into database
+  $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+  $stmt->bind_param("sss", $name, $email, $password);
+
+  if ($stmt->execute()) {
+      $_SESSION["user_id"] = $stmt->insert_id; // Use last insert ID for the session
+      $_SESSION["user_name"] = $name;
+      header("Location: login.php");
+      exit();
+  } else {
+      $error = "Error: " . $stmt->error;
+  }
+
+  $stmt->close();
+}
+$checkStmt->close();
+}
+$conn->close();
+
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en"  data-bs-theme="dark">
 <head>
@@ -26,6 +72,19 @@ requireAuth();
       font-weight: bold;
     }
 
+    .create-account-form {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width:500px;
+    background-color: #171a1c;
+    margin:50px auto 0px;
+    border:1px solid gray;
+    padding:50px 20px;
+    border-radius: 12px;
+  }
     nav{
         background: #000;
     }
@@ -62,6 +121,10 @@ requireAuth();
       </div>
     </div>
   </nav>
+
+  <div class="container d-flex justify-content-end">
+    <button class="btn btn-primary my-4" id="create-account-toggle"> Create User</button>
+  </div>
 
 <div class="container">
 
@@ -100,7 +163,7 @@ if ($result->num_rows > 0) {
                 <td>" . $row["nom"] . "</td>
                 <td>" . $row["adress"] . "</td>
                 <td>" . $row["tel"] . "</td>
-                <td><a href='pages/user_edit.php?cin=" . $row["cin"] . "'>Edit</a> | <a href='pages/user_delete.php?cin=" . $row["cin"] . "'>Delete</a></td>
+                <td><a href='pages/client_edit.php?cin=" . $row["cin"] . "'>Edit</a> | <a href='pages/client_delete.php?cin=" . $row["cin"] . "'>Delete</a></td>
               </tr>";
     }
     echo "</table>";
@@ -281,11 +344,104 @@ echo "No contrats found.";
 
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-------------------------- forms  -->
+
+
+<form class="create-account-form d-none" method="POST" action="" class="needs-validation mx-auto " novalidate>
+<div class="container mt-5">
+        <h2 class="mb-4">Create Account</h2>
+
+         <!-- show errors -->
+        <?php if (isset($error)): ?>
+        <div class="alert alert-danger" role="alert">
+            <?php echo $error; ?>
+        </div>
+    <?php endif; ?>
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="user..." required>
+         <div class="invalid-feedback">
+                    Please enter your full name.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" required>
+                <div class="invalid-feedback">
+                    Please enter a valid email address.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="strong password..." required>
+                <div class="invalid-feedback">
+                    Please enter a password.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script src="./app.js">
 
 </script>
 
-
+<script>
+        // Bootstrap form validation
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
