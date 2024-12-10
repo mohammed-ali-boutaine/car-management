@@ -106,7 +106,7 @@ if ($result->num_rows > 0) {
     echo "</table>";
 
 } else {
-    echo "No users found.";
+    echo "No clients found.";
 }
 
         
@@ -155,13 +155,13 @@ if ($result->num_rows > 0) {
                 <td>" . $row["marque"] . "</td>
                 <td>" . $row["modele"] . "</td>
                 <td>" . $row["annee"] . "</td>
-                <td><a href='pages/voiture_edit.php?matricule=" . $row["matricule"] . "'>Edit</a> | <a href='pages/voiture_edit.php?matricule=" . $row["matricule"] . "'>Delete</a></td>
+                <td><a href='pages/voiture_edit.php?matricule=" . $row["matricule"] . "'>Edit</a> | <a href='pages/voiture_delete.php?matricule=" . $row["matricule"] . "'>Delete</a></td>
               </tr>";
     }
     echo "</table>";
 
 } else {
-    echo "No users found.";
+    echo "No Voitures found.";
 }
 
         
@@ -238,15 +238,15 @@ if ($result->num_rows > 0) {
                     <td>" . $row["modele"] . "</td>
                     <td>" . $row["annee"] . "</td>
                     <td>
-                        <a href='pages/user_edit.php?id=" . $row["id"] . "'>Edit</a> | 
-                        <a href='pages/user_delete.php?id=" . $row["id"] . "'>Delete</a>
+                        <a href='pages/contrat_edit.php?id=" . $row["id"] . "'>Edit</a> | 
+                        <a href='pages/contrat_delete.php?id=" . $row["id"] . "'>Delete</a>
                     </td>
                   </tr>";
         }
         echo "</tbody></table>";
 
 } else {
-echo "No users found.";
+echo "No contrats found.";
 }
 
 ?>
