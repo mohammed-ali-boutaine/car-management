@@ -1,4 +1,5 @@
 <?php
+include "./config.php";
 include "./db/conn.php";
 include "./functions/helpers.php";
 

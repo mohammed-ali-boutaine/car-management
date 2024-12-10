@@ -1,7 +1,7 @@
 <?php
 
 
-include "./config.php";
+// include "./config.php";
 
 $tets = new mysqli();
 $conn = new mysqli(DB_HOST,
