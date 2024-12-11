@@ -92,7 +92,7 @@ $conn->close();
         <button class="btn btn-secondary " id="create-account-toggle"> Create User</button>
           </li>
           <li class="nav-item  ms-4">
-            <a class="nav-link text-danger  mr-4" href="logout.php">Logout</a>
+            <a class="nav-link text-danger  mr-4" href="pages/logout.php">Logout</a>
           </li>
         </ul>
       </div>
@@ -144,7 +144,7 @@ if ($result->num_rows > 0) {
                 <td>" . $row["nom"] . "</td>
                 <td>" . $row["adress"] . "</td>
                 <td>" . $row["tel"] . "</td>
-                <td><a href='pages/client_edit.php?cin=" . $row["cin"] . "'>Edit</a> | <a href='pages/client_delete.php?cin=" . $row["cin"] . "'>Delete</a></td>
+                <td><a href='pages/client_edit.php?cin=" . urlencode($row["cin"]) . "'>Edit</a> | <a href='pages/client_delete.php?cin=" . urlencode($row["cin"]) . "'>Delete</a></td>
               </tr>";
     }
     echo "</table>";

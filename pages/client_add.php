@@ -4,6 +4,8 @@ include "../config.php";
 include "../db/conn.php";
 include "../functions/helpers.php";
 
+// Authentication function
+
 requireAuth();
 
 // db connection
